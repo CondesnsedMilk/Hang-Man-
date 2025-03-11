@@ -1,0 +1,15 @@
+/workspaces/Hang-Man-/bin/Debug/net8.0/Hang-Man-
+/workspaces/Hang-Man-/bin/Debug/net8.0/Hang-Man-.deps.json
+/workspaces/Hang-Man-/bin/Debug/net8.0/Hang-Man-.runtimeconfig.json
+/workspaces/Hang-Man-/bin/Debug/net8.0/Hang-Man-.dll
+/workspaces/Hang-Man-/bin/Debug/net8.0/Hang-Man-.pdb
+/workspaces/Hang-Man-/obj/Debug/net8.0/Hang-Man-.GeneratedMSBuildEditorConfig.editorconfig
+/workspaces/Hang-Man-/obj/Debug/net8.0/Hang-Man-.AssemblyInfoInputs.cache
+/workspaces/Hang-Man-/obj/Debug/net8.0/Hang-Man-.AssemblyInfo.cs
+/workspaces/Hang-Man-/obj/Debug/net8.0/Hang-Man-.csproj.CoreCompileInputs.cache
+/workspaces/Hang-Man-/obj/Debug/net8.0/Hang-Man-.sourcelink.json
+/workspaces/Hang-Man-/obj/Debug/net8.0/Hang-Man-.dll
+/workspaces/Hang-Man-/obj/Debug/net8.0/refint/Hang-Man-.dll
+/workspaces/Hang-Man-/obj/Debug/net8.0/Hang-Man-.pdb
+/workspaces/Hang-Man-/obj/Debug/net8.0/Hang-Man-.genruntimeconfig.cache
+/workspaces/Hang-Man-/obj/Debug/net8.0/ref/Hang-Man-.dll
