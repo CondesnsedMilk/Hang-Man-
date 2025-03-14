@@ -36,11 +36,12 @@ class Program
     {
         int counter = 0;
         var wordInList = ChooseWord();
+        var hint = Hint(wordInList);
 
-        TakeUsrInput(wordInList, counter);
+        TakeUsrInput(wordInList, hint, counter);
     }
 
-    static void TakeUsrInput(List<char> wordList, int counter)
+    static void TakeUsrInput(List<char> wordList, List<char> hint, int counter)
     {
         string reducedInput;
 
@@ -53,7 +54,7 @@ class Program
             if(input.Length < 2)
             {
                 counter++;
-                CheckAnswer(wordList, input, counter);
+                CheckAnswer(wordList, hint, input, counter);
                 break; // To stop the entire loop.
             }
             else
@@ -64,23 +65,23 @@ class Program
 
     }
 
-    static void CheckAnswer(List<char> wordList, char[] input, int counter)
+    static void CheckAnswer(List<char> wordList, List<char> hint, char[] input, int counter)
     {
-        List<char> hint = new List<char>();
-
-        for(int i=0; i < wordList.Count; i++)
-        {
-            hint.Add('_');
-        }
-
         for(int i = 0; i < wordList.Count; i++)
         {
             if (wordList[i] == hint[0])
             {
-                wordList.RemoveAt[i];
-                
+                wordList.RemoveAt(i);
+                hint.Insert(i, input[i]);
             }
         }
+
+        for(int i=0; i < hint.Count; i++)
+        {
+            Console.Write(hint[i]);
+        }
+        
+        TakeUsrInput(wordList, hint, counter);
     }
 
     static List<char> ChooseWord()
@@ -99,7 +100,7 @@ class Program
         return wordInList;
     }
 
-    /*static List<char> Hint(List<char> wordInList)
+    static List<char> Hint(List<char> wordInList)
     {
         List<char> hint = new List<char>();
 
@@ -109,7 +110,7 @@ class Program
         }
 
         return hint;
-    }*/
+    }
     
         
 }
