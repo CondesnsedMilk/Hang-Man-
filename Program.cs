@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.ComponentModel;
+using System.Xml;
 
 namespace Hang_Man_;
 
@@ -6,12 +7,18 @@ class Program
 {
     static void Main(string[] args)
     {
-        string input;
-
         Console.WriteLine("Welcome to Hang Man!");
-        Console.WriteLine("You are to choose letters one at a time to guess the hidden word BEFORE you hang our man.");
+        Console.WriteLine("You are to choose letters one at a time or guess the entire word to figure out the hidden word BEFORE you hang our man.");
         Console.WriteLine("You have 10 chances");
         Console.WriteLine("Would you like to play? y/n");
+        Play();
+
+    }
+
+    static void Play()
+    {
+        string input; 
+
         while(true)
         {
             input = Console.ReadLine()!.Trim().ToLower();;
@@ -19,20 +26,17 @@ class Program
             if(input == "y")
             {
                 IntialList();
-                break; // To stop the entire loop.
             }
             else if(input == "n")
             {
-                Console.WriteLine("Thanks for playing!");
+                Console.WriteLine("Thats okay!");
                 break;
             }
-            else
-            {
-                Console.WriteLine("Sorry! Invalid input. Enter y or n");
-            }
-        }
 
-    }  
+            Console.WriteLine("Sorry! Invalid input. Enter y or n");
+
+        }
+    }
 
     static void IntialList()
     {
@@ -47,13 +51,14 @@ class Program
     static void TakeUsrInput(List<char> wordList, List<char> hint, List<char> memory, int counter)
     {
         string reducedInput;
+        char[] input;
 
         Console.WriteLine();
         Console.WriteLine("What is your letter!");
         while(true)
         {
             reducedInput = Console.ReadLine()!.Trim().ToLower();
-            char[] input = reducedInput.ToCharArray();
+            input = reducedInput.ToCharArray();
 
             if(input.Length < 2)
             {
@@ -65,8 +70,7 @@ class Program
                         TakeUsrInput(wordList, hint, memory, counter);
                     }
                 }
-                CheckAnswer(wordList, hint, input, memory, counter);
-                break; // To stop the entire loop.
+                break;
             }
             else
             {
@@ -74,11 +78,18 @@ class Program
             } 
         }
 
+        CheckAnswer(wordList, hint, input, memory, counter);
+
     }
 
     static void CheckAnswer(List<char> wordList, List<char> hint, char[] input, List<char> memory, int counter)
     {
-        bool correct = false;
+        bool correctLetter = false;
+
+        for(int i=0; i < wordList.Count; i++)
+        { 
+            Console.Write($"{wordList[i]} " );
+        }
 
         memory.Add(input[0]);
         for(int i = 0; i < wordList.Count; i++)
@@ -87,33 +98,79 @@ class Program
             {
                 hint.RemoveAt(i);
                 hint.Insert(i, input[0]);
-                correct = true;
+                correctLetter = true;
             }
         }
         
-        if(correct)
+        if(correctLetter)
         {
             counter--;
         }
 
         counter++;
 
-        for(int i=0; i < hint.Count; i++)
-        {
-            Console.Write($"{hint[i]} " );
-        }
-
-        Console.WriteLine();
-
-        Console.Write("Your letters are: " );
-
-        for(int i=0; i < memory.Count; i++)
-        { 
-            Console.Write($"{memory[i]} " );
-        }
-        Console.Write($"You have {10 - counter} lives left!" );
+        Console.WriteLine(counter);
         
-        TakeUsrInput(wordList, hint, memory, counter);
+        bool done = false; 
+
+        if (wordList == hint)
+        {
+            done = Win(counter);
+        }
+        else if (10 - counter == 0)
+        {
+            done = Lose();
+        }
+
+        PrintHint(done, wordList, hint, input, memory, counter);
+    }
+
+    static void PrintHint(bool done, List<char> wordList, List<char> hint, char[] input, List<char> memory, int counter)
+    {
+        while (true)
+        {
+            if(!done)
+            {
+                for(int i=0; i < hint.Count; i++)
+                {
+                    Console.Write($"{hint[i]} " );
+                }
+
+                Console.WriteLine();
+
+                Console.Write("Your letters are: " );
+
+                for(int i=0; i < memory.Count; i++)
+                { 
+                    Console.Write($"{memory[i]} " );
+                }
+                Console.Write($"You have {10 - counter} lives left!" );
+                
+                TakeUsrInput(wordList, hint, memory, counter);
+            }
+            else
+            {
+                break;
+            }
+            
+        }
+
+    }
+
+    static bool Win(int counter)
+    {
+        Console.WriteLine($"Nice work! You were able to save the man in {counter} attempts!");
+        Console.WriteLine("Would you like to play again? y/n");
+        Play();
+        return false;
+    }
+
+    static bool Lose()
+    {
+        Console.WriteLine("Uh oh... You have lost...");
+        Console.WriteLine("Would you like to play again? y/n");
+        Play();
+        return true;
     }
 
     static List<char> ChooseWord()
