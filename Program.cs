@@ -10,14 +10,28 @@ class Program
         Console.WriteLine("Welcome to Hang Man!");
         Console.WriteLine("You are to choose letters one at a time or guess the entire word to figure out the hidden word BEFORE you hang our man.");
         Console.WriteLine("You have 10 chances");
-        Console.WriteLine("Would you like to play? y/n");
-        Play();
+        while (true)
+        {
+            bool play = Play();
 
+            if (!play)
+            {
+                Console.WriteLine("That's okay!");
+                break;
+            }
+
+            var wordInList = ChooseWord();
+            List<char> memory = new List<char>();
+
+            var input = TakeUsrInput(wordInList);
+        }
     }
 
-    static void Play()
+    static bool Play()
     {
         string input; 
+        
+        Console.WriteLine("Would you like to play? y/n");
 
         while(true)
         {
@@ -25,12 +39,11 @@ class Program
 
             if(input == "y")
             {
-                IntialList();
+                return true;
             }
             else if(input == "n")
             {
-                Console.WriteLine("Thats okay!");
-                break;
+                return false;
             }
 
             Console.WriteLine("Sorry! Invalid input. Enter y or n");
@@ -38,48 +51,30 @@ class Program
         }
     }
 
-    static void IntialList()
-    {
-        int counter = 0;
-        var wordInList = ChooseWord();
-        var hint = Hint(wordInList);
-        List<char> memory = new List<char>();
-
-        TakeUsrInput(wordInList, hint, memory, counter);
-    }
-
-    static void TakeUsrInput(List<char> wordList, List<char> hint, List<char> memory, int counter)
+    static List<char> TakeUsrInput(List<char> hint, List<char> memory)
     {
         string reducedInput;
         char[] input;
 
         Console.WriteLine();
         Console.WriteLine("What is your letter!");
-        while(true)
+        reducedInput = Console.ReadLine()!.Trim().ToLower();
+        input = reducedInput.ToCharArray();
+
+        if(input.Length < 2)
         {
-            reducedInput = Console.ReadLine()!.Trim().ToLower();
-            input = reducedInput.ToCharArray();
-
-            if(input.Length < 2)
+            for(int j = 0; j < memory.Count; j++)
             {
-                for(int j = 0; j < memory.Count; j++)
+                if(input[0] == memory[j])
                 {
-                    if(input[0] == memory[j])
-                    {
-                        Console.WriteLine("Sorry! You've already inputted this letter. Try again!");
-                        TakeUsrInput(wordList, hint, memory, counter);
-                    }
+                    Console.WriteLine("Sorry! You've already inputted this letter. Try again!");
                 }
-                break;
             }
-            else
-            {
-                Console.WriteLine("Sorry! Invalid input. Please enter in only ONE letter!");
-            } 
         }
-
-        CheckAnswer(wordList, hint, input, memory, counter);
-
+        else
+        {
+            Console.WriteLine("Sorry! Invalid input. Please enter in only ONE letter!");
+        } 
     }
 
     static void CheckAnswer(List<char> wordList, List<char> hint, char[] input, List<char> memory, int counter)
@@ -127,8 +122,6 @@ class Program
 
     static void PrintHint(bool done, List<char> wordList, List<char> hint, char[] input, List<char> memory, int counter)
     {
-        while (true)
-        {
             if(!done)
             {
                 for(int i=0; i < hint.Count; i++)
@@ -148,12 +141,6 @@ class Program
                 
                 TakeUsrInput(wordList, hint, memory, counter);
             }
-            else
-            {
-                break;
-            }
-            
-        }
 
     }
 
