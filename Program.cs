@@ -32,7 +32,6 @@ class Program
             while(!win)
             {
                 var input = TakeUsrInput(memory);
-                memory.Add(input);
                 correct = CheckAnswer(wordInList, hint, input);
                     
                 if(!correct)
@@ -87,6 +86,7 @@ class Program
         
         Console.WriteLine("Enter a letter: ");
         input = Console.ReadLine()!.Trim().ToLower();
+        
 
         if (input.Length != 1)
         {
