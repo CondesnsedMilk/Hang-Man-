@@ -26,13 +26,15 @@ class Program
 
             var wordInList = ChooseWord();
             var hint = Hint(wordInList);
-            char[] memory;
-            
+            List<char> memory = new List<char>();
+
+
             while(!win)
             {
                 var input = TakeUsrInput(memory);
+                memory.Add(input);
                 correct = CheckAnswer(wordInList, hint, input);
-
+                    
                 if(!correct)
                 {
                     lives--;
@@ -43,7 +45,7 @@ class Program
                     Lose();
                     break;
                 }
-                else if (hint == wordInList)
+                else if (!hint.Contains('_'))
                 {
                     Win(lives);
                     break;
@@ -79,35 +81,32 @@ class Program
         }
     }
 
-    static char[] TakeUsrInput(char[] memory)
+    static char TakeUsrInput(List<char> memory)
     {
-        string reducedInput;
-        char[] input;
+        string input;
+        
+        Console.WriteLine("Enter a letter: ");
+        input = Console.ReadLine()!.Trim().ToLower();
 
-        Console.WriteLine();
-        Console.WriteLine("What is your letter!");
-        reducedInput = Console.ReadLine()!.Trim().ToLower();
-        input = reducedInput.ToCharArray();
-
-        if(input.Length < 2)
+        if (input.Length != 1)
         {
-            memory.Append(input[0]);
-            for(int j = 0; j < memory.Length; j++)
-            {
-                if(input[0] == memory[j])
-                {
-                    Console.WriteLine("Sorry! You've already inputted this letter. Try again!");
-                }
-            }
+            Console.WriteLine("Please enter only one letter!");   
+            Console.WriteLine();
+            return '\0';  
         }
-        else
+        
+        if (memory.Contains(input[0]))
         {
-            Console.WriteLine("Sorry! Invalid input. Please enter in only ONE letter!");
-        } 
-        return new char[] (input, memory);
+            Console.WriteLine("You've already guessed that letter. Try again!");
+            Console.WriteLine();
+            return '\0';
+        }
+        
+        memory.Add(input[0]);
+        return input[0];
     }
 
-    static bool CheckAnswer(List<char> wordList, List<char> hint, char[] input)
+    static bool CheckAnswer(List<char> wordList, List<char> hint, char input)
     {
         bool correctLetter = false;
 
@@ -118,10 +117,10 @@ class Program
 
         for(int i = 0; i < wordList.Count; i++)
         {
-            if (wordList[i] == input[0])
+            if (wordList[i] == input)
             {
                 hint.RemoveAt(i);
-                hint.Insert(i, input[0]);
+                hint.Insert(i, input);
                 correctLetter = true;
             }
         }
@@ -135,27 +134,27 @@ class Program
 
     }
 
-    static void PrintHint(List<char> hint, char[] memory, int lives)
+    static void PrintHint(List<char> hint, List<char> memory, int lives)
     {
         for(int i=0; i < hint.Count; i++)
         {
-            Console.Write($"{hint[i]} " );
+            Console.Write($"{hint[i]} ");
         }
 
         Console.WriteLine();
 
-        Console.Write("Your letters are: " );
+        Console.Write("Your letters are: ");
 
-        for(int i=0; i < memory.Length; i++)
+        for(int i=0; i < memory.Count; i++)
         { 
             Console.Write($"{memory[i]} ");
         }
-        Console.Write($"You have {lives} lives left!" );
+        Console.WriteLine($"You have {lives} lives left!");
     }
 
     static void Win(int counter)
     {
-        Console.WriteLine($"Nice work! You were able to save the man in {counter} attempts!");
+        Console.WriteLine($"Nice work! You were able to save the man in {10 - counter} attempts!");
     }
 
     static void Lose()
